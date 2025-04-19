@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - I-Money</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .logo-text {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #1c1c1c;
+    }
+
+    .logo-text span {
+      color: #108AB1;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin-bottom: 30px;
+      font-weight: 500;
+      color: #333;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 15px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background-color: #108AB1;
+      color: white;
+      font-weight: 600;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(229, 57, 53, 0.3);
+    }
+
+    .google-btn {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .links {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .links a {
+      color: #108AB1;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-text">I-<span>Biblioteca</span></div>
+    <h1>Faça login na sua conta</h1>
+    <form method="POST" action="login.php">
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="password" name="senha" placeholder="Senha" required>
+      <button type="submit" class="btn">ENTRAR</button>
+    </form>
+
+    <div class="google-btn">
+      <div id="g_id_onload"
+        data-client_id="SEU_CLIENT_ID"
+        data-context="signin"
+        data-ux_mode="popup"
+        data-callback="handleGoogleSignIn"
+        data-auto_prompt="false">
+      </div>
+      <div class="g_id_signin"
+        data-type="standard"
+        data-shape="pill"
+        data-theme="outline"
+        data-text="signin_with"
+        data-size="large">
+      </div>
+    </div>
+
+    <div class="links">
+      <span>Não tem conta?<a href="cadastro.html">Cadastre-se</a></span>
+    </div>
+  </div>
+
+  <script>
+  function handleGoogleSignIn(response) {
+    const credential = response.credential;
+    fetch("google-signup.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ credential })
+    })
+    .then(res => res.json())
+    .then(data => {
+      window.location.href = "menu.php";
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Erro no login com Google.");
+    });
+  }
+</script>
+</body>
+</html>
